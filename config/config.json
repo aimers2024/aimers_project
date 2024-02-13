@@ -1,0 +1,83 @@
+{
+    "case": 1,
+    "drop_column": [
+        "customer_country.1",
+        "business_subarea",
+        "id_strategic_ver",
+        "it_strategic_ver",
+        "product_subcategory"
+    ],
+    "Ordinal": [
+        "customer_country",
+        "business_unit",
+        "customer_idx",
+        "customer_type",
+        "customer_job",
+        "inquiry_type",
+        "product_category",
+        "customer_position",
+        "response_corporate",
+        "expected_timeline",
+        "business_area"
+    ],
+    "Frequency": [
+        "lead_owner"
+    ],
+    "OneHot": [
+        "enterprise"
+    ],
+    "Grouping": [
+        "customer_type",
+        "customer_job",
+        "inquiry_type",
+        "product_category",
+        "customer_position",
+        "business_area"
+    ],
+    "grouping_element": [
+        "Etc.",
+        "Other",
+        "Others",
+        "other stores",
+        "other",
+        "others",
+        "none",
+        "not applicable",
+        "other - please specify - cedia association",
+        "(Select ID_Needs)",
+        "ETC.",
+        "Not specified",
+        "other_",
+        "etc."
+    ],
+    "null_integer": [
+        "com_reg_ver_win_rate",
+        "historical_existing_cnt",
+        "expected_timeline",
+        "ver_win_rate_x",
+        "ver_win_ratio_per_bu"
+    ],
+    "null_string": [
+        "product_modelname",
+        "customer_country",
+        "customer_type",
+        "customer_job",
+        "inquiry_type",
+        "product_category",
+        "business_area"
+    ],
+    "Categorical": [
+        "customer_country",
+        "business_unit",
+        "customer_type",
+        "enterprise",
+        "customer_job",
+        "inquiry_type",
+        "product_category",
+        "customer_country",
+        "customer_position",
+        "response_corporate",
+        "expected_timeline",
+        "business_area"
+    ]
+}
