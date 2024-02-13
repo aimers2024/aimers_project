@@ -1,18 +1,15 @@
 import os
-import pickle
 from category_encoders import OneHotEncoder, OrdinalEncoder
 
 dir_name = os.path.dirname(os.path.abspath(__file__)) # 현재 파일의 디렉토리 경로
 class DataPreprocessor:
-    def __init__(self, preprocess_columns, train_mode=True):
+    def __init__(self, preprocess_columns):
         os.makedirs(os.path.join(dir_name, 'config'), exist_ok=True)
         self.preprocess_columns = preprocess_columns
-        self.train_mode = train_mode
         self.enc_ordinal = None
         self.frequency_mappings = {}
         self.enc_onehot = None
-        if not train_mode:
-            self.load_encoders()
+
     def preprocess(self,df):
         #Preprocessing
         ##id_strategic_ver,it_strategic_ver 병합
@@ -29,14 +26,12 @@ class DataPreprocessor:
         #Drop
         df = df.drop(self.preprocess_columns['drop_column'], axis=1)
 
-
         #Fill-Null
         for column in self.preprocess_columns['null_integer']:
             df[column] = df[column].fillna(0)
             
         for column in self.preprocess_columns['null_string']:
             df[column] = df[column].fillna('others')
-            
 
         #Group
         for column in self.preprocess_columns['Grouping']:
@@ -68,8 +63,7 @@ class DataPreprocessor:
         # One-hot encoding
         self.enc_onehot = OneHotEncoder(cols=self.preprocess_columns['OneHot'], use_cat_names=True)
         df = self.enc_onehot.fit_transform(df)
-        
-        self.save_encoders()
+
         return df
 
     def transform(self, df):
@@ -88,19 +82,3 @@ class DataPreprocessor:
         df = self.enc_onehot.transform(df)
         
         return df
-
-    def save_encoders(self):
-        with open(os.path.join(dir_name, 'config', 'enc_ordinal.pkl'), 'wb') as file:
-            pickle.dump(self.enc_ordinal, file)
-        with open(os.path.join(dir_name, 'config', 'frequency_mappings.pkl'), 'wb') as file:
-            pickle.dump(self.frequency_mappings, file)
-        with open(os.path.join(dir_name, 'config', 'enc_onehot.pkl'), 'wb') as file:
-            pickle.dump(self.enc_onehot, file)
-    
-    def load_encoders(self):
-        with open(os.path.join(dir_name, 'config', 'enc_ordinal.pkl'), 'rb') as file:
-            self.enc_ordinal = pickle.load(file)
-        with open(os.path.join(dir_name, 'config', 'frequency_mappings.pkl'), 'rb') as file:
-            self.frequency_mappings = pickle.load(file)
-        with open(os.path.join(dir_name, 'config', 'enc_onehot.pkl'), 'rb') as file:
-            self.enc_onehot = pickle.load(file)
