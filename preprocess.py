@@ -1,9 +1,11 @@
-import pandas as pd
+import os
 import pickle
 from category_encoders import OneHotEncoder, OrdinalEncoder
 
+dir_name = os.path.dirname(os.path.abspath(__file__)) # 현재 파일의 디렉토리 경로
 class DataPreprocessor:
     def __init__(self, preprocess_columns, train_mode=True):
+        os.makedirs(os.path.join(dir_name, 'config'), exist_ok=True)
         self.preprocess_columns = preprocess_columns
         self.train_mode = train_mode
         self.enc_ordinal = None
@@ -78,23 +80,27 @@ class DataPreprocessor:
         # Ordinal encoding
         df = self.enc_ordinal.transform(df)
         
+        # Frequency encoding
+        for column in self.preprocess_columns['Frequency']:
+            df[column] = df[column].apply(lambda x: self.frequency_mappings[column].get(x, 0))
+        
         # One-hot encoding
         df = self.enc_onehot.transform(df)
         
         return df
 
     def save_encoders(self):
-        with open('enc_ordinal.pkl', 'wb') as file:
+        with open(os.path.join(dir_name, 'config', 'enc_ordinal.pkl'), 'wb') as file:
             pickle.dump(self.enc_ordinal, file)
-        with open('frequency_mappings.pkl', 'wb') as file:
+        with open(os.path.join(dir_name, 'config', 'frequency_mappings.pkl'), 'wb') as file:
             pickle.dump(self.frequency_mappings, file)
-        with open('enc_onehot.pkl', 'wb') as file:
+        with open(os.path.join(dir_name, 'config', 'enc_onehot.pkl'), 'wb') as file:
             pickle.dump(self.enc_onehot, file)
     
     def load_encoders(self):
-        with open('enc_ordinal.pkl', 'rb') as file:
+        with open(os.path.join(dir_name, 'config', 'enc_ordinal.pkl'), 'rb') as file:
             self.enc_ordinal = pickle.load(file)
-        with open('frequency_mappings.pkl', 'rb') as file:
+        with open(os.path.join(dir_name, 'config', 'frequency_mappings.pkl'), 'rb') as file:
             self.frequency_mappings = pickle.load(file)
-        with open('enc_onehot.pkl', 'rb') as file:
+        with open(os.path.join(dir_name, 'config', 'enc_onehot.pkl'), 'rb') as file:
             self.enc_onehot = pickle.load(file)
