@@ -21,7 +21,7 @@ class DataPreprocessor:
         df.loc[df['product_category'].isnull() & df['product_subcategory'].notnull(), 'product_category'] = df['product_subcategory']
 
         #customer contry 열에서 나라만 뽑아보기
-        df['customer_country'] = df["customer_country"].str.split('/').str[2]
+        df['customer_country'] = df["customer_country"].str.strip().str.split('/').str[2]
 
         #Drop
         df = df.drop(self.preprocess_columns['drop_column'], axis=1)
