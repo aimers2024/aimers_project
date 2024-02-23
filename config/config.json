@@ -18,7 +18,8 @@
         "customer_position",
         "response_corporate",
         "expected_timeline",
-        "business_area"
+        "business_area",
+        "product_modelname"
     ],
     "Frequency": [
         "lead_owner"
